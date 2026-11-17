@@ -1,0 +1,1143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SignalFunnelLabs | Post-click ad revenue systems</title>
+<meta name="description" content="SignalFunnelLabs builds the landing pages, funnels and booking flows that turn paid ad clicks into revenue. Conversion rate optimization, site speed and GEO, delivered as a 30-day revenue sprint.">
+<meta name="theme-color" content="#070810">
+<meta property="og:type" content="website">
+<meta property="og:title" content="SignalFunnelLabs | Post-click ad revenue systems">
+<meta property="og:description" content="SignalFunnelLabs builds the landing pages, funnels and booking flows that turn paid ad clicks into revenue. Conversion rate optimization, site speed and GEO, delivered as a 30-day revenue sprint.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Crect width='30' height='30' rx='7' fill='%23070810'/%3E%3Cpath d='M6 8h18l-7 8.5v6.5l-4 2v-8.5z' fill='none' stroke='%23FF5A36' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: one long dark "lab" page. Vermilion signal on blue-black ink, mono labels, a falling-clicks funnel as the hero moment. */
+:root{
+  --bg:#070810; --card:#0F121D; --ink:#EEF0F7; --mute:#A0A6BA; --dim:#8A90A8;
+  --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.17);
+  --signal:#FF5A36; --ice:#8FD3FF;
+  --display:'Bricolage Grotesque','Arial Black',system-ui,sans-serif;
+  --body:'Instrument Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+body{margin:0;background:#070810}
+a{color:#FF5A36}
+a:hover{color:#FF8566}
+*{box-sizing:border-box}
+:focus-visible{outline:2px solid #8FD3FF;outline-offset:3px;border-radius:6px}
+
+.page{position:relative;overflow-x:clip;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.gridbg{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:72px 72px;-webkit-mask-image:linear-gradient(#000 0,transparent 760px);mask-image:linear-gradient(#000 0,transparent 760px)}
+.glow1{position:absolute;top:-220px;right:-200px;width:820px;height:820px;pointer-events:none;background:radial-gradient(circle,color-mix(in srgb,var(--signal) 24%,transparent),transparent 62%)}
+.glow2{position:absolute;top:1500px;left:-300px;width:760px;height:760px;pointer-events:none;background:radial-gradient(circle,color-mix(in srgb,var(--ice) 11%,transparent),transparent 64%)}
+.glow3{position:absolute;top:4300px;right:-280px;width:760px;height:760px;pointer-events:none;background:radial-gradient(circle,color-mix(in srgb,var(--signal) 13%,transparent),transparent 64%)}
+.layer{position:relative;z-index:1}
+.wrap{width:100%;max-width:1200px;margin:0 auto;padding:0 28px}
+.sec{padding:128px 0}
+
+/* type */
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font:500 12px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--signal)}
+.eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--signal);box-shadow:0 0 12px var(--signal);animation:sflPing 2s ease-in-out infinite}
+.h1{margin:22px 0 0;font:800 clamp(42px,6.2vw,80px)/.98 var(--display);letter-spacing:-.035em;text-wrap:balance}
+.h1 .sig{color:var(--signal)}
+.h2{margin:18px 0 0;font:800 clamp(34px,4.6vw,58px)/1.02 var(--display);letter-spacing:-.03em;text-wrap:balance;max-width:880px}
+.h3{margin:0;font:700 22px/1.2 var(--display);letter-spacing:-.015em}
+.lede{margin:22px 0 0;max-width:640px;font-size:19px;line-height:1.6;color:var(--mute);text-wrap:pretty}
+.mono{font-family:var(--mono)}
+.tiny{font:500 12px/1.5 var(--mono);letter-spacing:.06em;color:var(--dim)}
+p{margin:0}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 26px;border-radius:999px;font:600 16px/1 var(--body);text-decoration:none;cursor:pointer;border:1px solid transparent;transition:transform .2s ease,box-shadow .2s ease,background .2s ease,border-color .2s ease}
+.btn-primary{background:var(--signal);color:#0A0B12;box-shadow:0 12px 44px -12px color-mix(in srgb,var(--signal) 75%,transparent)}
+.btn-primary:hover{color:#0A0B12;background:color-mix(in srgb,var(--signal) 88%,#fff);transform:translateY(-2px)}
+.btn-ghost{background:transparent;color:var(--ink);border-color:var(--line2)}
+.btn-ghost:hover{color:var(--ink);border-color:var(--ice);background:rgba(143,211,255,.06)}
+.btn-sm{min-height:42px;padding:0 20px;font-size:14px}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,#070810 74%,transparent);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:72px}
+.brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font:800 21px/1 var(--display);letter-spacing:-.03em}
+.brand:hover{color:var(--ink)}
+.brand .labs{font-weight:500;color:var(--signal)}
+.nav-links{display:flex;align-items:center;gap:2px}
+.navlink{color:var(--mute);text-decoration:none;font:500 14px/1 var(--body);padding:12px 14px;border-radius:10px;transition:color .2s,background .2s}
+.navlink:hover{color:var(--ink);background:rgba(255,255,255,.05)}
+
+/* hero */
+.hero{padding:76px 0 96px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);gap:56px;align-items:center}
+.rise{animation:sflRise .9s cubic-bezier(.2,.7,.2,1) both}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:40px}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border:1px solid var(--line2);border-radius:999px;font:500 12px/1 var(--mono);letter-spacing:.04em;color:var(--mute)}
+.chip i{width:6px;height:6px;border-radius:50%;background:var(--ice);display:block}
+
+.vis{position:relative;width:100%;max-width:430px;margin:0 auto;aspect-ratio:400/520}
+.vis svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.sfl-p{position:absolute;width:6px;height:6px;margin-left:-3px;border-radius:50%;opacity:0;animation-iteration-count:infinite;animation-timing-function:linear}
+.sfl-p.lost{background:#7C84A0}
+.sfl-p.win{width:9px;height:9px;margin-left:-4.5px;background:var(--signal);box-shadow:0 0 16px 2px var(--signal);animation-name:sflWin}
+.l0{animation-name:sflL0}.l1{animation-name:sflL1}.l2{animation-name:sflL2}.l3{animation-name:sflL3}
+.l4{animation-name:sflL4}.l5{animation-name:sflL5}.l6{animation-name:sflL6}.l7{animation-name:sflL7}
+.node{position:absolute;left:50%;top:92%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;display:grid;place-items:center;background:#120C0B;border:1.5px solid var(--signal);color:var(--signal);font:800 28px/1 var(--display)}
+.node::after{content:"";position:absolute;inset:-10px;border-radius:50%;border:1px solid var(--signal);animation:sflPulse 2.4s ease-out infinite}
+.vlabel{position:absolute;font:500 11px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.vlabel b{display:block;font-weight:500;color:var(--ice)}
+
+/* marquee */
+.band{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(255,255,255,.015);overflow:hidden}
+.band-in{display:flex;align-items:center;gap:36px;padding:22px 0}
+.band-lead{flex:none;font:500 12px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim);padding-left:28px}
+.marq-mask{overflow:hidden;flex:1;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.marq{display:flex;width:max-content;animation:sflMarq 44s linear infinite}
+.marq span{display:inline-flex;align-items:center;gap:14px;padding-right:44px;font:700 20px/1 var(--display);letter-spacing:-.01em;color:#C9CDDB;white-space:nowrap}
+.marq span::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--signal);opacity:.8;display:block}
+
+/* leaks */
+.leaks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:64px;margin-top:72px}
+.leak{display:grid;grid-template-columns:56px minmax(0,1fr);gap:20px;padding:36px 0;border-top:1px solid var(--line2)}
+.leak .ico{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;color:var(--signal);background:color-mix(in srgb,var(--signal) 10%,transparent);border:1px solid color-mix(in srgb,var(--signal) 28%,transparent)}
+.leak .no{font:500 12px/1 var(--mono);letter-spacing:.14em;color:var(--dim);margin-bottom:10px}
+.leak p{margin-top:10px;color:var(--mute);max-width:460px}
+
+/* system */
+.rail{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;margin-top:80px}
+.rail::before{content:"";position:absolute;left:0;right:0;top:13px;height:1px;background:linear-gradient(90deg,var(--signal),color-mix(in srgb,var(--signal) 10%,transparent))}
+.step{position:relative;padding-top:48px}
+.step .pin{position:absolute;top:6px;left:0;width:15px;height:15px;border-radius:50%;background:var(--bg);border:2px solid var(--signal);box-shadow:0 0 18px color-mix(in srgb,var(--signal) 70%,transparent)}
+.step .n{font:500 12px/1 var(--mono);letter-spacing:.14em;color:var(--signal);margin-bottom:14px}
+.step p{margin-top:12px;color:var(--mute);font-size:16px}
+.step .out{margin-top:20px;display:inline-block;font:500 11px/1.5 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ice);border:1px solid rgba(143,211,255,.28);border-radius:8px;padding:7px 10px}
+
+/* before / after */
+.ba-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.65fr);gap:48px;margin-top:56px;align-items:start}
+.toggle{display:inline-flex;padding:5px;border-radius:999px;border:1px solid var(--line2);background:rgba(255,255,255,.03)}
+.tg{min-height:44px;padding:0 26px;border-radius:999px;border:0;background:transparent;color:var(--mute);font:600 15px/1 var(--body);cursor:pointer;transition:background .2s,color .2s}
+.tg:hover{color:var(--ink)}
+.tg.on{background:var(--signal);color:#0A0B12}
+.browser{border:1px solid var(--line2);border-radius:18px;overflow:hidden;background:#0B0D16;box-shadow:0 40px 90px -40px rgba(0,0,0,.9)}
+.bar{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.03)}
+.bar i{width:10px;height:10px;border-radius:50%;background:#2A2F42;display:block}
+.bar .url{margin-left:12px;flex:1;max-width:320px;padding:6px 12px;border-radius:8px;background:rgba(255,255,255,.05);font:500 12px/1 var(--mono);color:var(--dim)}
+.mockbody{padding:22px;min-height:440px;display:flex;flex-direction:column;gap:18px}
+.m-nav{display:flex;align-items:center;gap:10px}
+.m-nav .lg{width:70px;height:16px;border-radius:5px;background:#2A2F42}
+.m-nav .it{width:34px;height:8px;border-radius:4px;background:#222638}
+.m-pop{padding:10px 14px;border-radius:10px;background:#2B2A1E;border:1px solid #4B4727;color:#D9D2A0;font-size:13px}
+.m-h-old{font:600 24px/1.2 var(--body);color:#7E849C}
+.m-line{height:9px;border-radius:5px;background:#1E2234}
+.m-btns{display:flex;flex-wrap:wrap;gap:10px}
+.m-btn-old{padding:11px 16px;border-radius:8px;border:1px solid #2F3550;color:#7E849C;font-size:14px}
+.m-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:auto}
+.m-tiles div{height:64px;border-radius:10px;background:#141828}
+.m-eyebrow{font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ice)}
+.m-h-new{font:800 clamp(28px,3.4vw,40px)/1.02 var(--display);letter-spacing:-.03em}
+.m-h-new em{font-style:normal;color:var(--signal)}
+.m-widget{display:grid;grid-template-columns:repeat(2,minmax(0,1fr)) auto;gap:10px;align-items:stretch;padding:12px;border-radius:16px;border:1px solid var(--line2);background:rgba(255,255,255,.04)}
+.m-field{padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.05);font:500 11px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.m-field b{display:block;margin-top:2px;font:600 15px/1.2 var(--body);letter-spacing:0;text-transform:none;color:var(--ink)}
+.m-go{display:inline-flex;align-items:center;padding:0 22px;border-radius:12px;background:var(--signal);color:#0A0B12;font:700 15px/1 var(--body)}
+.m-proof{display:flex;flex-wrap:wrap;gap:10px 22px;font-size:14px;color:var(--mute)}
+.m-proof b{color:var(--ink);font-weight:600}
+.notes{display:flex;flex-direction:column;gap:0;margin-top:28px}
+.note{display:grid;grid-template-columns:34px minmax(0,1fr);gap:14px;padding:22px 0;border-top:1px solid var(--line)}
+.note .k{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font:500 12px/1 var(--mono);color:#0A0B12;background:var(--signal)}
+.note.bad .k{background:#5A6080;color:#fff}
+.note b{display:block;font:700 17px/1.3 var(--display);margin-bottom:4px}
+.note span{color:var(--mute);font-size:15px}
+
+/* services bento */
+.bento{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:18px;margin-top:64px}
+.tile{position:relative;overflow:hidden;padding:30px;border-radius:24px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.012));transition:border-color .3s,transform .3s}
+.tile:hover{border-color:color-mix(in srgb,var(--signal) 55%,transparent);transform:translateY(-3px)}
+.tile .ico{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;color:var(--signal);background:color-mix(in srgb,var(--signal) 10%,transparent);border:1px solid color-mix(in srgb,var(--signal) 26%,transparent);margin-bottom:22px}
+.tile p{margin-top:10px;color:var(--mute);font-size:16px}
+.t-a{grid-column:span 4}.t-b{grid-column:span 2}.t-c{grid-column:span 2}.t-d{grid-column:span 2}.t-e{grid-column:span 2}.t-f{grid-column:span 6}
+.bars{display:flex;align-items:flex-end;gap:7px;height:110px;margin-top:26px}
+.bars i{flex:1;display:block;border-radius:5px 5px 2px 2px;background:linear-gradient(180deg,var(--signal),color-mix(in srgb,var(--signal) 15%,transparent));transform-origin:bottom;animation:sflGrow 1.4s cubic-bezier(.2,.7,.2,1) both}
+.chat{margin-top:22px;display:flex;flex-direction:column;gap:10px}
+.bub{max-width:92%;padding:11px 14px;border-radius:14px;font-size:14px;line-height:1.45}
+.bub.q{align-self:flex-end;background:rgba(255,255,255,.07);color:var(--ink)}
+.bub.a{background:color-mix(in srgb,var(--signal) 12%,transparent);border:1px solid color-mix(in srgb,var(--signal) 30%,transparent);color:#F4D9D2}
+.t-f-in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:center}
+.pipe{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.pipe span{padding:10px 12px;border:1px solid var(--line2);border-radius:10px}
+.pipe em{font-style:normal;color:var(--signal)}
+
+/* calculator */
+.calc-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;margin-top:60px}
+.panel{padding:36px;border-radius:28px;border:1px solid var(--line2);background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.01))}
+.ctl{display:flex;flex-direction:column;gap:12px;padding:20px 0;border-top:1px solid var(--line)}
+.ctl:first-child{border-top:0;padding-top:0}
+.ctl-top{display:flex;align-items:baseline;justify-content:space-between;gap:16px}
+.ctl label{font:500 14px/1.3 var(--body);color:var(--mute)}
+.ctl output{font:700 22px/1 var(--display);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;height:28px;accent-color:var(--signal);cursor:pointer;background:transparent}
+.out-panel{position:relative;overflow:hidden;border-color:color-mix(in srgb,var(--signal) 45%,transparent);background:radial-gradient(circle at 80% 0%,color-mix(in srgb,var(--signal) 20%,transparent),transparent 60%),linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01))}
+.big{margin-top:12px;font:800 clamp(52px,7vw,96px)/.95 var(--display);letter-spacing:-.045em;color:var(--signal);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.big small{font-size:.32em;letter-spacing:-.01em;color:var(--mute);font-weight:500}
+.rows{margin-top:30px;display:flex;flex-direction:column}
+.rw{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:14px 0;border-top:1px solid var(--line);color:var(--mute);font-size:15px}
+.rw b{font:600 18px/1 var(--display);color:var(--ink);font-variant-numeric:tabular-nums}
+
+/* manifesto */
+.manifesto{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:72px;border-top:1px solid var(--line2)}
+.pr{padding:36px 32px 8px 0}
+.pr + .pr{padding-left:32px;border-left:1px solid var(--line)}
+.pr .n{font:500 12px/1 var(--mono);letter-spacing:.14em;color:var(--signal);margin-bottom:16px}
+.pr p{margin-top:12px;color:var(--mute);font-size:16px}
+
+/* sprint + tiers */
+.weeks{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:64px}
+.wk{padding:28px;border-radius:22px;border:1px solid var(--line);background:rgba(255,255,255,.025);display:flex;flex-direction:column;gap:12px}
+.wk .w{font:500 12px/1 var(--mono);letter-spacing:.14em;color:var(--signal)}
+.wk p{color:var(--mute);font-size:15px}
+.wk .out{margin-top:auto;padding-top:12px;font:500 11px/1.5 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ice)}
+.tiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:88px;align-items:stretch}
+.tier{position:relative;display:flex;flex-direction:column;gap:18px;padding:34px;border-radius:26px;border:1px solid var(--line);background:rgba(255,255,255,.025)}
+.tier.core{border-color:color-mix(in srgb,var(--signal) 60%,transparent);background:radial-gradient(circle at 50% 0%,color-mix(in srgb,var(--signal) 17%,transparent),transparent 62%),rgba(255,255,255,.03);box-shadow:0 30px 90px -40px color-mix(in srgb,var(--signal) 70%,transparent)}
+.tier .tag{font:500 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ice)}
+.tier.core .tag{color:var(--signal)}
+.price{font:800 40px/1 var(--display);letter-spacing:-.03em}
+.price small{font:500 15px/1 var(--body);color:var(--mute);letter-spacing:0}
+.ph{display:inline-block;padding:4px 10px;border-radius:8px;border:1px dashed var(--line2);color:var(--ice);font:500 14px/1.3 var(--mono);letter-spacing:0}
+.tier ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;color:var(--mute);font-size:15px}
+.tier li{display:grid;grid-template-columns:14px minmax(0,1fr);gap:12px}
+.tier li::before{content:"";width:8px;height:8px;margin-top:8px;background:var(--signal);transform:rotate(45deg)}
+.tier .btn{margin-top:auto}
+
+/* work placeholders */
+.work{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:60px}
+.case{padding:30px;border-radius:24px;border:1px dashed var(--line2);background:rgba(255,255,255,.02);display:flex;flex-direction:column;gap:16px;min-height:300px}
+.case .res{margin-top:auto;font:800 44px/1 var(--display);letter-spacing:-.035em;color:var(--signal)}
+
+/* faq */
+.faq{margin-top:56px;border-bottom:1px solid var(--line)}
+.q{border-top:1px solid var(--line)}
+.q-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:84px;padding:20px 0;background:transparent;border:0;color:var(--ink);text-align:left;cursor:pointer;font:700 clamp(18px,2vw,23px)/1.3 var(--display);letter-spacing:-.015em}
+.q-btn:hover .plus{border-color:var(--signal);color:var(--signal)}
+.plus{flex:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--line2);display:grid;place-items:center;color:var(--mute);transition:transform .3s,border-color .2s,color .2s}
+.plus.open{transform:rotate(45deg);border-color:var(--signal);color:var(--signal)}
+.q-a{padding:0 60px 28px 0;max-width:760px;color:var(--mute)}
+
+/* contact */
+.cta{position:relative;overflow:hidden;padding:72px;border-radius:36px;border:1px solid color-mix(in srgb,var(--signal) 45%,transparent);background:radial-gradient(circle at 15% 0%,color-mix(in srgb,var(--signal) 24%,transparent),transparent 55%),radial-gradient(circle at 100% 100%,color-mix(in srgb,var(--ice) 12%,transparent),transparent 50%),#0C0E19}
+.cta-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:56px;align-items:center}
+.form{display:flex;flex-direction:column;gap:16px}
+.fld{display:flex;flex-direction:column;gap:8px}
+.fld label{font:500 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.fld input,.fld select{min-height:52px;padding:0 16px;border-radius:14px;border:1px solid var(--line2);background:rgba(7,8,16,.7);color:var(--ink);font:500 16px/1 var(--body)}
+.fld input::placeholder{color:#7A8099}
+.fld input:focus,.fld select:focus{outline:2px solid var(--ice);outline-offset:2px;border-color:transparent}
+.sent{padding:14px 16px;border-radius:14px;border:1px dashed var(--ice);color:var(--ice);font-size:14px;line-height:1.5}
+
+/* footer */
+.foot{border-top:1px solid var(--line);padding:64px 0 48px}
+.foot-grid{display:grid;grid-template-columns:minmax(0,1.4fr) repeat(2,minmax(0,.6fr));gap:48px}
+.foot a{display:block;color:var(--mute);text-decoration:none;font-size:15px;padding:6px 0}
+.foot a:hover{color:var(--ink)}
+.foot h4{margin:0 0 10px;font:500 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.legal{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:48px;padding-top:24px;border-top:1px solid var(--line)}
+
+/* keyframes */
+@keyframes sflRise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes sflPing{0%,100%{opacity:1}50%{opacity:.35}}
+@keyframes sflPulse{0%{opacity:.8;transform:scale(.85)}100%{opacity:0;transform:scale(1.7)}}
+@keyframes sflMarq{to{transform:translateX(-50%)}}
+@keyframes sflGrow{from{transform:scaleY(.04)}to{transform:scaleY(1)}}
+@keyframes sflWin{0%{opacity:0;top:-3%}8%{opacity:1}90%{opacity:1}100%{opacity:0;top:88%}}
+@keyframes sflL0{0%{opacity:0;top:-3%}10%{opacity:.8}80%{opacity:.8}100%{opacity:0;top:17.3%}}
+@keyframes sflL1{0%{opacity:0;top:-3%}10%{opacity:.8}80%{opacity:.8}100%{opacity:0;top:23.1%}}
+@keyframes sflL2{0%{opacity:0;top:-3%}10%{opacity:.8}80%{opacity:.8}100%{opacity:0;top:28.8%}}
+@keyframes sflL3{0%{opacity:0;top:-3%}10%{opacity:.8}80%{opacity:.8}100%{opacity:0;top:34.6%}}
+@keyframes sflL4{0%{opacity:0;top:-3%}10%{opacity:.8}80%{opacity:.8}100%{opacity:0;top:40.4%}}
+@keyframes sflL5{0%{opacity:0;top:-3%}10%{opacity:.8}80%{opacity:.8}100%{opacity:0;top:46.2%}}
+@keyframes sflL6{0%{opacity:0;top:-3%}10%{opacity:.8}80%{opacity:.8}100%{opacity:0;top:51.9%}}
+@keyframes sflL7{0%{opacity:0;top:-3%}10%{opacity:.8}80%{opacity:.8}100%{opacity:0;top:57.7%}}
+
+/* responsive */
+@media (max-width:1020px){
+  .hero-grid,.ba-grid,.calc-grid,.cta-grid,.t-f-in{grid-template-columns:minmax(0,1fr)}
+  .nav-links{display:none}
+  .rail,.weeks{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .rail::before{display:none}
+  .bento{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .t-a,.t-f{grid-column:span 2}.t-b,.t-c,.t-d,.t-e{grid-column:span 1}
+  .tiers,.work{grid-template-columns:minmax(0,1fr)}
+  .manifesto{grid-template-columns:minmax(0,1fr)}
+  .pr,.pr + .pr{padding:28px 0;border-left:0;border-top:1px solid var(--line)}
+  .leaks{grid-template-columns:minmax(0,1fr)}
+  .foot-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .foot-grid > :first-child{grid-column:span 2}
+  .cta{padding:44px 28px}
+  .band-lead{display:none}
+}
+@media (max-width:640px){
+  .sec{padding:84px 0}
+  .wrap{padding:0 18px}
+  .hero{padding:48px 0 64px}
+  .rail,.weeks,.bento{grid-template-columns:minmax(0,1fr)}
+  .t-a,.t-b,.t-c,.t-d,.t-e,.t-f{grid-column:span 1}
+  .m-widget{grid-template-columns:minmax(0,1fr)}
+  .m-go{justify-content:center;min-height:48px}
+  .panel{padding:24px}
+  .q-a{padding-right:0}
+  .leak{grid-template-columns:minmax(0,1fr)}
+  .foot-grid{grid-template-columns:minmax(0,1fr)}
+  .foot-grid > :first-child{grid-column:span 1}
+  .btn{width:100%}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .sfl-p{display:none}
+  .rise,.bars i{opacity:1}
+}
+
+html{scroll-behavior:smooth}
+section[id]{scroll-margin-top:72px}
+[hidden]{display:none !important}
+.skip{position:absolute;left:12px;top:-60px;z-index:100;padding:12px 18px;border-radius:10px;background:#FF5A36;color:#0A0B12;font:600 15px/1 var(--body);text-decoration:none}
+.skip:focus{top:12px;color:#0A0B12}
+.q-h{margin:0;font:inherit}
+.form-note{font:500 13px/1.5 var(--mono);color:var(--dim)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "SignalFunnelLabs",
+    "description": "Post-click ad revenue systems: conversion rate optimization, landing pages, booking and checkout flows, site speed and generative engine optimization (GEO) for businesses that pay for traffic.",
+    "serviceType": [
+      "Conversion rate optimization",
+      "Landing page design",
+      "Generative engine optimization"
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What do you need to get started?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The URL your ads land on, which ad platforms you run, and view access to your analytics. We start from what is already running and do not ask you to rebuild anything first."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you replace my whole website?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Only where it pays. Most sprints rebuild the pages your ads land on and the flow that closes the sale. The rest of your site stays as it is until there is a reason to touch it."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What platform do you build on?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The one that suits you and that your team can edit, such as Framer or your current CMS. The goal is speed and control, not a build only we can touch."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How soon will I see results?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The sprint runs 30 days. You see a working prototype in week one. How fast revenue moves depends on your traffic volume, so we report on your real numbers instead of promising a date."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is GEO?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Generative engine optimization. It means structuring your site so AI answer engines such as ChatGPT, Gemini and Perplexity can understand your business and recommend it when people ask."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can you guarantee a conversion lift?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sales and revenue are the whole point of what we do. Every page, flow and test is built to raise revenue per click, and we prove it in dollars, not vanity metrics. You see a working prototype before you commit, tracking follows each visitor from click to cash, and the sprint ends with a report on what moved and what we test next. We do not print a made-up percentage, because the lift depends on your traffic and your offer. We find the leaks, fix them, and keep testing until the revenue moves."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Who is this for?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Businesses that spend on ads, see clicks, and feel the customer count does not match. If your traffic is paid and your pages are doing the least work in the funnel, this is the fix."
+        }
+      }
+    ]
+  }
+]
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="page">
+  <div class="gridbg"></div>
+  <div class="glow1"></div>
+  <div class="glow2"></div>
+  <div class="glow3"></div>
+
+  <div class="layer">
+
+    <!-- NAV -->
+    <header class="nav">
+      <div class="wrap nav-in">
+        <a class="brand" href="#top" aria-label="SignalFunnelLabs home">
+          <svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true"><path d="M4 6h22l-8.5 10v8l-5 2.5V16z" stroke="#FF5A36" stroke-width="2" stroke-linejoin="round"/><circle cx="15" cy="2.8" r="2" fill="#8FD3FF"/></svg>
+          <span>SignalFunnel<span class="labs">Labs</span></span>
+        </a>
+        <nav class="nav-links" aria-label="Primary">
+          <a class="navlink" href="#problem">Problem</a>
+          <a class="navlink" href="#system">System</a>
+          <a class="navlink" href="#services">Services</a>
+          <a class="navlink" href="#calculator">Calculator</a>
+          <a class="navlink" href="#sprint">Sprint</a>
+          <a class="navlink" href="#faq">FAQ</a>
+        </nav>
+        <a class="btn btn-primary btn-sm" href="#contact">Get a teardown</a>
+      </div>
+    </header>
+
+    <main id="main">
+
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow rise" style="animation-delay:.05s"><span class="dot"></span>Post-click ad revenue systems</div>
+          <h1 class="h1 rise" style="animation-delay:.15s">The click is the cheap part. <span class="sig">The page after it makes the money.</span></h1>
+          <p class="lede rise" style="animation-delay:.3s">You already paid for the traffic. SignalFunnelLabs builds the landing pages, funnels and booking flows that turn those clicks into customers, and shows you a live prototype of your page before you commit.</p>
+          <div class="rise" style="display:flex;flex-wrap:wrap;gap:14px;margin-top:40px;animation-delay:.45s">
+            <a class="btn btn-primary" href="#contact">Get my free post-click teardown</a>
+            <a class="btn btn-ghost" href="#system">See how the system works</a>
+          </div>
+          <div class="chips rise" style="animation-delay:.6s">
+            <span class="chip"><i></i>Prototype first</span>
+            <span class="chip"><i></i>30-day revenue sprint</span>
+            <span class="chip"><i></i>CRO + GEO under one roof</span>
+          </div>
+        </div>
+
+        <div class="vis rise" style="animation-delay:.35s" role="img" aria-label="Animation: many ad clicks fall into a funnel, most stop at the walls, a few pass through to revenue">
+          <svg viewBox="0 0 400 520" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M20 10 L150 330 L150 440 M380 10 L250 330 L250 440" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="1.5" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+            <path d="M20 10 L380 10" fill="none" stroke="rgba(143,211,255,.5)" stroke-width="1.5" stroke-dasharray="4 6" vector-effect="non-scaling-stroke"/>
+            <path d="M20 10 L150 330 L150 440 L250 440 L250 330 L380 10 Z" fill="rgba(255,255,255,.025)" stroke="none"/>
+          </svg>
+          <div id="particles" style="position:absolute;inset:0" aria-hidden="true"></div>
+          <div class="vlabel" style="top:-26px;left:0"><b>Ad clicks</b>Paid for, every one</div>
+          <div class="vlabel" style="top:40%;right:-4px;text-align:right"><b>Your landing page</b>Where most clicks stall</div>
+          <div class="vlabel" style="top:67%;left:66%"><b>Post-click system</b></div>
+          <div class="vlabel" style="top:97%;left:0;right:0;text-align:center;margin-top:10px"><b>Revenue</b></div>
+          <div class="node" aria-hidden="true">$</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAND -->
+    <div class="band">
+      <div class="wrap" style="padding:0">
+        <div class="band-in">
+          <div class="band-lead">Built for<br>paid traffic</div>
+          <div class="marq-mask">
+            <div class="marq" id="marq" aria-hidden="true">
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROBLEM -->
+    <section class="sec" id="problem">
+      <div class="wrap">
+        <div class="eyebrow">01 / The leak</div>
+        <h2 class="h2">Your ad did its job. The page after it is where the money leaks.</h2>
+        <p class="lede">Ad platforms get a visitor to your door. What the visitor sees in the next few seconds decides whether that spend becomes revenue or a line on a report. These are the four places it usually goes wrong.</p>
+
+        <div class="leaks">
+          <div class="leak">
+            <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16a8 8 0 1 1 16 0"/><path d="M12 16l4-5"/></svg></div>
+            <div>
+              <div class="no">LEAK 01</div>
+              <h3 class="h3">A first screen that loads slowly on a phone</h3>
+              <p>Most paid clicks arrive on mobile. If the page is still painting, the visitor is already back on the results page, and you paid for the visit anyway.</p>
+            </div>
+          </div>
+          <div class="leak">
+            <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h10M4 7l3-3M4 7l3 3"/><path d="M20 17H10m10 0l-3-3m3 3l-3 3"/></svg></div>
+            <div>
+              <div class="no">LEAK 02</div>
+              <h3 class="h3">An ad that promises one thing and a page that opens with another</h3>
+              <p>The visitor clicked for a specific offer. A generic homepage makes them hunt for it, and most will not.</p>
+            </div>
+          </div>
+          <div class="leak">
+            <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg></div>
+            <div>
+              <div class="no">LEAK 03</div>
+              <h3 class="h3">Too many doors and no obvious winner</h3>
+              <p>A full navigation bar, five competing buttons and a popup. Every extra choice gives the visitor a reason not to take the one that earns.</p>
+            </div>
+          </div>
+          <div class="leak">
+            <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h13"/><path d="M16 6v12"/><path d="M20 9v6"/></svg></div>
+            <div>
+              <div class="no">LEAK 04</div>
+              <h3 class="h3">A last step that does not close the sale</h3>
+              <p>Contact forms that go nowhere, booking flows that dead-end, checkouts that ask for too much too early. The interest was there. The path was not.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SYSTEM -->
+    <section class="sec" id="system" style="padding-top:40px">
+      <div class="wrap">
+        <div class="eyebrow">02 / The system</div>
+        <h2 class="h2">A post-click revenue system, built in four moves.</h2>
+        <p class="lede">Each move has one job and one thing you can hold at the end of it. No mystery retainer, no deck full of recommendations nobody builds.</p>
+
+        <div class="rail">
+          <div class="step">
+            <span class="pin"></span>
+            <div class="n">MOVE 01</div>
+            <h3 class="h3">Read the signal</h3>
+            <p>We trace the full path from ad to payment: speed, message match, tracking and the exact steps where visitors drop off.</p>
+            <span class="out">You get: a teardown</span>
+          </div>
+          <div class="step">
+            <span class="pin"></span>
+            <div class="n">MOVE 02</div>
+            <h3 class="h3">Rebuild the path</h3>
+            <p>One focused page per ad promise. One offer, one action, proof beside the decision, fast on a phone.</p>
+            <span class="out">You get: a live prototype</span>
+          </div>
+          <div class="step">
+            <span class="pin"></span>
+            <div class="n">MOVE 03</div>
+            <h3 class="h3">Close the gap</h3>
+            <p>Booking, quote and checkout flows that finish the sale, with follow-up that catches the visitors who hesitate.</p>
+            <span class="out">You get: a flow that closes</span>
+          </div>
+          <div class="step">
+            <span class="pin"></span>
+            <div class="n">MOVE 04</div>
+            <h3 class="h3">Compound it</h3>
+            <p>We test what moves revenue, keep what wins and report in dollars. Every cycle makes the system sharper.</p>
+            <span class="out">You get: a revenue report</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BEFORE / AFTER -->
+    <section class="sec" id="see-it">
+      <div class="wrap">
+        <div class="eyebrow">03 / See it</div>
+        <h2 class="h2">Same ad click. Two very different next seconds.</h2>
+        <p class="lede">Flip between a typical landing page and one built as a post-click system. This is an illustrative example. Your teardown uses your real pages.</p>
+
+        <div style="margin-top:36px">
+          <div class="toggle" role="group" aria-label="Choose a version of the page">
+            <button class="tg on" id="tgBefore" type="button" aria-pressed="true">Before</button>
+            <button class="tg" id="tgAfter" type="button" aria-pressed="false">After</button>
+          </div>
+        </div>
+
+        <div class="ba-grid">
+          <div class="browser">
+            <div class="bar"><i></i><i></i><i></i><span class="url">yourbrand.com/landing</span></div>
+
+            <div data-state="before">
+              <div class="mockbody">
+                <div class="m-nav"><span class="lg"></span><span class="it"></span><span class="it"></span><span class="it"></span><span class="it"></span><span class="it"></span><span class="it"></span></div>
+                <div class="m-pop">Sign up for our newsletter and get 10% off your first order!</div>
+                <div class="m-h-old">Welcome to our website</div>
+                <div style="display:flex;flex-direction:column;gap:8px"><span class="m-line" style="width:92%"></span><span class="m-line" style="width:78%"></span><span class="m-line" style="width:84%"></span></div>
+                <div class="m-btns"><span class="m-btn-old">Learn more</span><span class="m-btn-old">Contact us</span><span class="m-btn-old">Read more</span><span class="m-btn-old">Get started</span></div>
+                <div class="m-tiles"><div></div><div></div><div></div></div>
+              </div>
+            </div>
+
+            <div data-state="after" hidden>
+              <div class="mockbody">
+                <div class="m-nav" style="justify-content:space-between"><span class="lg" style="background:#FF5A36"></span><span style="font:600 13px/1 var(--body);color:#A0A6BA">Check dates</span></div>
+                <div style="display:flex;flex-direction:column;gap:14px;margin-top:10px">
+                  <div class="m-eyebrow">Private-pool villa &middot; sleeps 8</div>
+                  <div class="m-h-new">The villa from your ad. <em>Book it direct.</em></div>
+                  <p style="color:#A0A6BA;font-size:15px;max-width:440px">Pick your dates and see the direct rate. No platform fee, no account to create.</p>
+                </div>
+                <div class="m-widget">
+                  <div class="m-field">Check in<b>Choose date</b></div>
+                  <div class="m-field">Check out<b>Choose date</b></div>
+                  <span class="m-go">Check availability</span>
+                </div>
+                <div class="m-proof"><span><b>&#9733;&#9733;&#9733;&#9733;&#9733;</b> guest reviews</span><span><b>Best direct rate</b></span><span><b>Reply in minutes</b></span></div>
+                <div class="m-tiles"><div style="background:linear-gradient(135deg,#3A1D18,#141828)"></div><div style="background:linear-gradient(135deg,#1C2A3A,#141828)"></div><div style="background:linear-gradient(135deg,#2A2230,#141828)"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div data-state="before">
+              <div class="notes" style="margin-top:0">
+                <div class="note bad"><span class="k">1</span><div><b>It opens with a greeting</b><span>The visitor clicked for an offer and gets a welcome message instead.</span></div></div>
+                <div class="note bad"><span class="k">2</span><div><b>Four buttons, no winner</b><span>Everything is equally loud, so nothing is clearly the next step.</span></div></div>
+                <div class="note bad"><span class="k">3</span><div><b>A popup in the way</b><span>A discount ask lands before the visitor has seen a single reason to stay.</span></div></div>
+              </div>
+            </div>
+            <div data-state="after" hidden>
+              <div class="notes" style="margin-top:0">
+                <div class="note"><span class="k">1</span><div><b>It repeats the ad's promise</b><span>The headline matches what the visitor clicked, so there is nothing to decode.</span></div></div>
+                <div class="note"><span class="k">2</span><div><b>One action, where the eye lands</b><span>The booking widget sits in the first screen with a single clear button.</span></div></div>
+                <div class="note"><span class="k">3</span><div><b>Proof beside the decision</b><span>Reviews and rate guarantees sit right under the button, where doubt shows up.</span></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="sec" id="services">
+      <div class="wrap">
+        <div class="eyebrow">04 / What we build</div>
+        <h2 class="h2">Everything between the click and the cash.</h2>
+        <p class="lede">Six capabilities, one goal: more revenue from the traffic you already buy.</p>
+
+        <div class="bento">
+          <div class="tile t-a">
+            <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16l-6 7v6l-4 2v-8z"/></svg></div>
+            <h3 class="h3">Conversion architecture</h3>
+            <p>Funnel strategy and page structure designed around one number: revenue per click. Every section earns its place or goes.</p>
+            <div class="bars" aria-hidden="true">
+              <i style="height:22%;animation-delay:.0s"></i><i style="height:30%;animation-delay:.05s"></i><i style="height:26%;animation-delay:.1s"></i><i style="height:38%;animation-delay:.15s"></i><i style="height:44%;animation-delay:.2s"></i><i style="height:41%;animation-delay:.25s"></i><i style="height:55%;animation-delay:.3s"></i><i style="height:62%;animation-delay:.35s"></i><i style="height:60%;animation-delay:.4s"></i><i style="height:74%;animation-delay:.45s"></i><i style="height:82%;animation-delay:.5s"></i><i style="height:96%;animation-delay:.55s"></i>
+            </div>
+            <div class="tiny" style="margin-top:12px">Illustrative: revenue per click, cycle after cycle</div>
+          </div>
+
+          <div class="tile t-b">
+            <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h4"/></svg></div>
+            <h3 class="h3">Post-click landing pages</h3>
+            <p>Fast pages matched to each campaign, built in a stack your team can edit without calling a developer.</p>
+          </div>
+
+          <div class="tile t-c">
+            <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></div>
+            <h3 class="h3">Booking and checkout flows</h3>
+            <p>Direct-booking, quote and cart flows that remove every step between yes and paid.</p>
+          </div>
+
+          <div class="tile t-d">
+            <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 3L5 14h6l-1 7 8-11h-6z"/></svg></div>
+            <h3 class="h3">Speed and Core Web Vitals</h3>
+            <p>Mobile performance work measured before and after, so the gain is on the record.</p>
+          </div>
+
+          <div class="tile t-e">
+            <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg></div>
+            <h3 class="h3">Tracking and attribution</h3>
+            <p>Clean events from click to cash, so every dollar of ad spend has a result next to it.</p>
+          </div>
+
+          <div class="tile t-f">
+            <div class="t-f-in">
+              <div>
+                <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></svg></div>
+                <h3 class="h3">GEO: be the answer AI gives</h3>
+                <p>People now ask ChatGPT, Gemini and Perplexity who to book or buy from. Generative engine optimization structures your site so those answer engines can read it, trust it and name you.</p>
+                <div class="pipe" style="margin-top:22px"><span>Structure</span><em>&rarr;</em><span>Entities</span><em>&rarr;</em><span>Citations</span><em>&rarr;</em><span>Recommended</span></div>
+              </div>
+              <div class="chat" aria-label="Illustrative example of an AI answer">
+                <div class="bub q">Best private villa with direct booking?</div>
+                <div class="bub a">Based on clear pricing, reviews and booking details, <b>yourbrand.com</b> is a strong direct option.</div>
+                <div class="tiny">Illustrative example of an AI answer</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CALCULATOR -->
+    <section class="sec" id="calculator">
+      <div class="wrap">
+        <div class="eyebrow">05 / Do the math</div>
+        <h2 class="h2">What is a better post-click page worth to you?</h2>
+        <p class="lede">Enter your own numbers and choose the lift you want to test. The result is plain arithmetic on your inputs. It is a way to size the opportunity, not a promise.</p>
+
+        <div class="calc-grid">
+          <div class="panel">
+            <div class="ctl">
+              <div class="ctl-top"><label for="spend">Monthly ad spend</label><output for="spend"><span data-o="spendTxt">$8,000</span></output></div>
+              <input id="spend" type="range" min="500" max="100000" step="500" value="8000">
+            </div>
+            <div class="ctl">
+              <div class="ctl-top"><label for="cpc">Cost per click</label><output for="cpc"><span data-o="cpcTxt">$1.50</span></output></div>
+              <input id="cpc" type="range" min="0.2" max="10" step="0.05" value="1.5">
+            </div>
+            <div class="ctl">
+              <div class="ctl-top"><label for="cr">Current conversion rate</label><output for="cr"><span data-o="crTxt">1.8%</span></output></div>
+              <input id="cr" type="range" min="0.2" max="10" step="0.1" value="1.8">
+            </div>
+            <div class="ctl">
+              <div class="ctl-top"><label for="aov">Average order or booking value</label><output for="aov"><span data-o="aovTxt">$450</span></output></div>
+              <input id="aov" type="range" min="50" max="10000" step="50" value="450">
+            </div>
+            <div class="ctl">
+              <div class="ctl-top"><label for="lift">Conversion lift you want to test</label><output for="lift"><span data-o="liftTxt">+30%</span></output></div>
+              <input id="lift" type="range" min="5" max="100" step="5" value="30">
+            </div>
+          </div>
+
+          <div class="panel out-panel">
+            <div class="eyebrow">Added revenue each month</div>
+            <div class="big" aria-live="polite"><span data-o="extraTxt">$12,960</span><small> / mo</small></div>
+            <p style="margin-top:14px;color:var(--mute)">About <b style="color:var(--ink)"><span data-o="yearTxt">$155,520</span></b> a year, from the same ad spend.</p>
+            <div class="rows">
+              <div class="rw"><span>Paid clicks per month</span><b><span data-o="clicksTxt">5,333</span></b></div>
+              <div class="rw"><span>Customers per month today</span><b><span data-o="custNowTxt">96.0</span></b></div>
+              <div class="rw"><span>Customers per month after the lift</span><b><span data-o="custNewTxt">124.8</span></b></div>
+              <div class="rw"><span>Cost per customer today</span><b><span data-o="cpaNowTxt">$83</span></b></div>
+              <div class="rw"><span>Cost per customer after the lift</span><b><span data-o="cpaNewTxt">$64</span></b></div>
+            </div>
+            <div style="margin-top:30px"><a class="btn btn-primary" href="#contact">Find out what is realistic for me</a></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MANIFESTO -->
+    <section class="sec" id="about" style="padding-top:40px">
+      <div class="wrap">
+        <div class="eyebrow">06 / How we work</div>
+        <h2 class="h2">Most agencies sell you a website. We sell the revenue it is supposed to make.</h2>
+        <p class="lede">SignalFunnelLabs is a conversion lab run by Arjun Pawar, a CRO and GEO specialist. Every project is judged by sales, not by how the page looks in a screenshot.</p>
+
+        <div class="manifesto">
+          <div class="pr">
+            <div class="n">PRINCIPLE 01</div>
+            <h3 class="h3">Revenue first</h3>
+            <p>If a change does not make or protect money, it does not ship. Design, speed and copy are tools for that one outcome.</p>
+          </div>
+          <div class="pr">
+            <div class="n">PRINCIPLE 02</div>
+            <h3 class="h3">Prototype before you commit</h3>
+            <p>You see a working version of your new page first. The conversation starts from something real instead of a proposal.</p>
+          </div>
+          <div class="pr">
+            <div class="n">PRINCIPLE 03</div>
+            <h3 class="h3">Reported in dollars</h3>
+            <p>Dashboards full of vanity metrics help nobody. You get results in revenue terms, in plain language.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPRINT + TIERS -->
+    <section class="sec" id="sprint">
+      <div class="wrap">
+        <div class="eyebrow">07 / The 30-day revenue sprint</div>
+        <h2 class="h2">From first call to live pages in one month.</h2>
+        <p class="lede">The sprint is the core offer: a tight, four-week build that ships a new post-click path and measures it against your real traffic.</p>
+
+        <div class="weeks">
+          <div class="wk">
+            <div class="w">WEEK 1</div>
+            <h3 class="h3">Teardown and prototype</h3>
+            <p>We trace your ad-to-payment path and put a live prototype of the new page in front of you.</p>
+            <div class="out">Deliverable: teardown + prototype</div>
+          </div>
+          <div class="wk">
+            <div class="w">WEEK 2</div>
+            <h3 class="h3">Build the path</h3>
+            <p>Landing pages, offer and flow are built and wired into your analytics.</p>
+            <div class="out">Deliverable: pages ready to launch</div>
+          </div>
+          <div class="wk">
+            <div class="w">WEEK 3</div>
+            <h3 class="h3">Launch and watch</h3>
+            <p>New pages go live against your real traffic, with tracking from click to cash.</p>
+            <div class="out">Deliverable: live pages + tracking</div>
+          </div>
+          <div class="wk">
+            <div class="w">WEEK 4</div>
+            <h3 class="h3">Measure and plan</h3>
+            <p>We read the results in revenue terms and map the next round of tests.</p>
+            <div class="out">Deliverable: results report + roadmap</div>
+          </div>
+        </div>
+
+        <div class="tiers">
+          <div class="tier">
+            <div class="tag">Start here</div>
+            <h3 class="h3">Post-click teardown</h3>
+            <div class="price">Free</div>
+            <ul>
+              <li>Review of your click-to-cash path</li>
+              <li>Mobile speed check</li>
+              <li>Live prototype of one page</li>
+            </ul>
+            <a class="btn btn-ghost" href="#contact">Request a teardown</a>
+          </div>
+          <div class="tier core">
+            <div class="tag">Core offer</div>
+            <h3 class="h3">30-day revenue sprint</h3>
+            <!-- <div class="price"><span class="ph">[YOUR PRICE]</span></div> -->
+            <ul>
+              <li>Everything in the teardown</li>
+              <li>New landing pages and flow, built and launched</li>
+              <li>Tracking from click to cash</li>
+              <li>Results report in revenue terms</li>
+            </ul>
+            <a class="btn btn-primary" href="#contact">Start a sprint</a>
+          </div>
+          <div class="tier">
+            <div class="tag">Ongoing</div>
+            <h3 class="h3">Revenue partner</h3>
+            <!-- <div class="price"><span class="ph">[YOUR PRICE]</span> <small>/ month</small></div> -->
+            <ul>
+              <li>Monthly testing cycles</li>
+              <li>GEO and AI-answer visibility work</li>
+              <li>Revenue reporting every month</li>
+            </ul>
+            <a class="btn btn-ghost" href="#contact">Talk about partnering</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+ <!--     WORK -->
+    <!-- <section class="sec" id="work" style="padding-top:40px">
+      <div class="wrap">
+        <div class="eyebrow">08 / Selected work</div>
+        <h2 class="h2">Proof, in the numbers that pay the bills.</h2>
+        <p class="lede">Add your first case studies here. Each card holds a client, the channel, and the single result that mattered.</p>
+
+        <div class="work">
+          <div class="case">
+            <div class="tiny">CASE STUDY 01</div>
+            <h3 class="h3">[CLIENT NAME]</h3>
+            <p style="color:var(--mute);font-size:15px">[INDUSTRY] &middot; [AD CHANNEL]<br>[ONE LINE ON WHAT CHANGED]</p>
+            <div class="res">[RESULT]</div>
+          </div>
+          <div class="case">
+            <div class="tiny">CASE STUDY 02</div>
+            <h3 class="h3">[CLIENT NAME]</h3>
+            <p style="color:var(--mute);font-size:15px">[INDUSTRY] &middot; [AD CHANNEL]<br>[ONE LINE ON WHAT CHANGED]</p>
+            <div class="res">[RESULT]</div>
+          </div>
+          <div class="case">
+            <div class="tiny">CASE STUDY 03</div>
+            <h3 class="h3">[CLIENT NAME]</h3>
+            <p style="color:var(--mute);font-size:15px">[INDUSTRY] &middot; [AD CHANNEL]<br>[ONE LINE ON WHAT CHANGED]</p>
+            <div class="res">[RESULT]</div>
+          </div>
+        </div>
+      </div>
+    </section> -->
+
+    <!-- FAQ -->
+    <section class="sec" id="faq">
+      <div class="wrap">
+        <div class="eyebrow">09 / Questions</div>
+        <h2 class="h2">Straight answers before you book a call.</h2>
+
+        <div class="faq">
+                    <div class="q">
+            <h3 class="q-h"><button class="q-btn" id="faqb0" type="button" aria-expanded="true" aria-controls="faqa0"><span>What do you need to get started?</span><span class="plus open" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 2v12M2 8h12"/></svg></span></button></h3>
+            <div class="q-a" id="faqa0" role="region" aria-labelledby="faqb0">The URL your ads land on, which ad platforms you run, and view access to your analytics. We start from what is already running and do not ask you to rebuild anything first.</div>
+          </div>
+          <div class="q">
+            <h3 class="q-h"><button class="q-btn" id="faqb1" type="button" aria-expanded="false" aria-controls="faqa1"><span>Do you replace my whole website?</span><span class="plus" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 2v12M2 8h12"/></svg></span></button></h3>
+            <div class="q-a" id="faqa1" role="region" aria-labelledby="faqb1" hidden>Only where it pays. Most sprints rebuild the pages your ads land on and the flow that closes the sale. The rest of your site stays as it is until there is a reason to touch it.</div>
+          </div>
+          <div class="q">
+            <h3 class="q-h"><button class="q-btn" id="faqb2" type="button" aria-expanded="false" aria-controls="faqa2"><span>What platform do you build on?</span><span class="plus" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 2v12M2 8h12"/></svg></span></button></h3>
+            <div class="q-a" id="faqa2" role="region" aria-labelledby="faqb2" hidden>The one that suits you and that your team can edit, such as Framer or your current CMS. The goal is speed and control, not a build only we can touch.</div>
+          </div>
+          <div class="q">
+            <h3 class="q-h"><button class="q-btn" id="faqb3" type="button" aria-expanded="false" aria-controls="faqa3"><span>How soon will I see results?</span><span class="plus" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 2v12M2 8h12"/></svg></span></button></h3>
+            <div class="q-a" id="faqa3" role="region" aria-labelledby="faqb3" hidden>The sprint runs 30 days. You see a working prototype in week one. How fast revenue moves depends on your traffic volume, so we report on your real numbers instead of promising a date.</div>
+          </div>
+          <div class="q">
+            <h3 class="q-h"><button class="q-btn" id="faqb4" type="button" aria-expanded="false" aria-controls="faqa4"><span>What is GEO?</span><span class="plus" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 2v12M2 8h12"/></svg></span></button></h3>
+            <div class="q-a" id="faqa4" role="region" aria-labelledby="faqb4" hidden>Generative engine optimization. It means structuring your site so AI answer engines such as ChatGPT, Gemini and Perplexity can understand your business and recommend it when people ask.</div>
+          </div>
+          <div class="q">
+            <h3 class="q-h"><button class="q-btn" id="faqb5" type="button" aria-expanded="false" aria-controls="faqa5"><span>Can you guarantee a conversion lift?</span><span class="plus" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 2v12M2 8h12"/></svg></span></button></h3>
+            <div class="q-a" id="faqa5" role="region" aria-labelledby="faqb5" hidden>No honest team can promise a specific number, and you should doubt anyone who does. What you can expect is a clear teardown, a working prototype, tracking you can trust and results reported in revenue terms.</div>
+          </div>
+          <div class="q">
+            <h3 class="q-h"><button class="q-btn" id="faqb6" type="button" aria-expanded="false" aria-controls="faqa6"><span>Who is this for?</span><span class="plus" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 2v12M2 8h12"/></svg></span></button></h3>
+            <div class="q-a" id="faqa6" role="region" aria-labelledby="faqb6" hidden>Businesses that spend on ads, see clicks, and feel the customer count does not match. If your traffic is paid and your pages are doing the least work in the funnel, this is the fix.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+ -->    <!-- CONTACT -->
+    <section id="contact" style="padding:40px 0 128px">
+      <div class="wrap">
+        <div class="cta">
+          <div class="cta-grid">
+            <div>
+              <div class="eyebrow">10 / Start</div>
+              <h2 class="h2" style="font-size:clamp(34px,4.4vw,56px)">Paste your URL. See where the clicks go to die.</h2>
+              <p class="lede">Send the page your ads land on. You get back a post-click teardown and a live prototype of what it could be.</p>
+              <p class="tiny" style="margin-top:28px">Prefer email? <a href="mailto:grow@signalfunnellabs.com">grow@signalfunnellabs.com</a></p>
+            </div>
+            <div class="form">
+              <div class="fld">
+                <label for="siteUrl">Your landing page URL</label>
+                <input id="siteUrl" type="text" placeholder="yourbrand.com/landing" autocomplete="url">
+              </div>
+              <div class="fld">
+                <label for="workEmail">Email</label>
+                <input id="workEmail" type="text" placeholder="you@yourbrand.com" autocomplete="email">
+              </div>
+              <div class="fld">
+                <label for="adSpend">Monthly ad spend</label>
+                <select id="adSpend">
+                  <option>Under $2,000</option>
+                  <option>$2,000 to $10,000</option>
+                  <option>$10,000 to $50,000</option>
+                  <option>$50,000 or more</option>
+                </select>
+              </div>
+              <button class="btn btn-primary" id="sendBtn" type="button">Get my free teardown</button>
+              <div class="sent" id="formMsg" role="status" hidden></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="foot">
+      <div class="wrap">
+        <div class="foot-grid">
+          <div>
+            <a class="brand" href="#top" style="padding:0">
+              <svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true"><path d="M4 6h22l-8.5 10v8l-5 2.5V16z" stroke="#FF5A36" stroke-width="2" stroke-linejoin="round"/><circle cx="15" cy="2.8" r="2" fill="#8FD3FF"/></svg>
+              <span>SignalFunnel<span class="labs">Labs</span></span>
+            </a>
+            <p style="margin-top:18px;max-width:340px;color:var(--mute);font-size:15px">Post-click ad revenue systems. Conversion, speed and GEO work for businesses that pay for traffic.</p>
+          </div>
+          <div>
+            <h4>Explore</h4>
+            <a href="#problem">The leak</a>
+            <a href="#system">The system</a>
+            <a href="#services">Services</a>
+            <a href="#calculator">Calculator</a>
+          </div>
+          <div>
+            <h4>Work with us</h4>
+            <a href="#sprint">30-day sprint</a>
+            <a href="#faq">Questions</a>
+            <a href="#contact">Get a teardown</a>
+          </div>
+        </div>
+        <div class="legal">
+          <span class="tiny">&copy; 2026 SignalFunnelLabs. All rights reserved.</span>
+          <span class="tiny">Built to turn clicks into revenue.</span>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---- Contact form config ----------------------------------------------
+     GitHub Pages is static, so the form needs somewhere to send.
+     Pick one:
+       FORM_ENDPOINT  a form service URL (for example a Formspree endpoint)
+       CONTACT_EMAIL  opens the visitor's email app with the details filled in
+     Leave both empty and the form shows a "not connected" note. */
+  var FORM_ENDPOINT = 'https://formspree.io/f/xkjrrgjb';
+  var CONTACT_EMAIL = 'grow@signalfunnellabs.com';
+
+  function $(id) { return document.getElementById(id); }
+  function money(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+  function rnd(i, s) {
+    var v = Math.sin(i * 127.1 + s * 311.7) * 43758.5453;
+    return v - Math.floor(v);
+  }
+
+  /* ---- Hero particles: lost clicks stop at the funnel wall, a few pass ---- */
+  var box = $('particles');
+  if (box) {
+    var lanes = [13.1, 16.2, 19.2, 22.3, 25.3, 28.4, 31.4, 34.5];
+    var frag = document.createDocumentFragment();
+    var i, j, d, delay, x, el;
+    for (i = 0; i < 32; i++) {
+      var lane = i % 8;
+      var right = Math.floor(i / 8) % 2 === 1;
+      x = lanes[lane] + 1.2 + rnd(i, 1) * 0.9;
+      if (right) x = 100 - x;
+      d = 4.2 + rnd(i, 2) * 3.2;
+      delay = rnd(i, 3) * d;
+      el = document.createElement('span');
+      el.className = 'sfl-p lost l' + lane;
+      el.style.cssText = 'left:' + x.toFixed(2) + '%;animation-duration:' + d.toFixed(2) + 's;animation-delay:-' + delay.toFixed(2) + 's';
+      frag.appendChild(el);
+    }
+    for (j = 0; j < 8; j++) {
+      x = 42 + rnd(j, 7) * 16;
+      d = 3.6 + rnd(j, 8) * 2.2;
+      delay = rnd(j, 9) * d;
+      el = document.createElement('span');
+      el.className = 'sfl-p win';
+      el.style.cssText = 'left:' + x.toFixed(2) + '%;animation-duration:' + d.toFixed(2) + 's;animation-delay:-' + delay.toFixed(2) + 's';
+      frag.appendChild(el);
+    }
+    box.appendChild(frag);
+  }
+
+  /* ---- Marquee ---- */
+  var marq = $('marq');
+  if (marq) {
+    var labels = ['Direct-booking villas', 'B2B and wholesale suppliers', 'Home services', 'Ecommerce brands', 'Lead-gen businesses', 'Google Ads', 'Meta Ads', 'LinkedIn Ads', 'TikTok Ads', 'Bing Ads'];
+    labels.concat(labels).forEach(function (t) {
+      var s = document.createElement('span');
+      s.textContent = t;
+      marq.appendChild(s);
+    });
+  }
+
+  /* ---- Before / After ---- */
+  var tgB = $('tgBefore'), tgA = $('tgAfter');
+  function setState(name) {
+    var before = name === 'before';
+    tgB.className = before ? 'tg on' : 'tg';
+    tgA.className = before ? 'tg' : 'tg on';
+    tgB.setAttribute('aria-pressed', before ? 'true' : 'false');
+    tgA.setAttribute('aria-pressed', before ? 'false' : 'true');
+    var panels = document.querySelectorAll('[data-state]');
+    for (var k = 0; k < panels.length; k++) {
+      panels[k].hidden = panels[k].getAttribute('data-state') !== name;
+    }
+  }
+  if (tgB && tgA) {
+    tgB.addEventListener('click', function () { setState('before'); });
+    tgA.addEventListener('click', function () { setState('after'); });
+  }
+
+  /* ---- Calculator ---- */
+  var inputs = { spend: $('spend'), cpc: $('cpc'), cr: $('cr'), aov: $('aov'), lift: $('lift') };
+  function setOut(key, text) {
+    var els = document.querySelectorAll('[data-o="' + key + '"]');
+    for (var k = 0; k < els.length; k++) els[k].textContent = text;
+  }
+  function calc() {
+    var spend = Number(inputs.spend.value);
+    var cpc = Number(inputs.cpc.value);
+    var cr = Number(inputs.cr.value);
+    var aov = Number(inputs.aov.value);
+    var lift = Number(inputs.lift.value);
+    var clicks = spend / cpc;
+    var custNow = clicks * (cr / 100);
+    var custNew = custNow * (1 + lift / 100);
+    var extra = custNow * aov * (lift / 100);
+    setOut('spendTxt', money(spend));
+    setOut('cpcTxt', '$' + cpc.toFixed(2));
+    setOut('crTxt', cr.toFixed(1) + '%');
+    setOut('aovTxt', money(aov));
+    setOut('liftTxt', '+' + lift + '%');
+    setOut('clicksTxt', Math.round(clicks).toLocaleString('en-US'));
+    setOut('custNowTxt', custNow.toFixed(1));
+    setOut('custNewTxt', custNew.toFixed(1));
+    setOut('cpaNowTxt', money(custNow > 0 ? spend / custNow : 0));
+    setOut('cpaNewTxt', money(custNew > 0 ? spend / custNew : 0));
+    setOut('extraTxt', money(extra));
+    setOut('yearTxt', money(extra * 12));
+  }
+  if (inputs.spend) {
+    Object.keys(inputs).forEach(function (key) { inputs[key].addEventListener('input', calc); });
+    calc();
+  }
+
+  /* ---- FAQ ---- */
+  var qbtns = document.querySelectorAll('.q-btn');
+  function closeAll() {
+    for (var k = 0; k < qbtns.length; k++) {
+      qbtns[k].setAttribute('aria-expanded', 'false');
+      qbtns[k].querySelector('.plus').className = 'plus';
+      document.getElementById(qbtns[k].getAttribute('aria-controls')).hidden = true;
+    }
+  }
+  for (var q = 0; q < qbtns.length; q++) {
+    qbtns[q].addEventListener('click', function () {
+      var wasOpen = this.getAttribute('aria-expanded') === 'true';
+      closeAll();
+      if (!wasOpen) {
+        this.setAttribute('aria-expanded', 'true');
+        this.querySelector('.plus').className = 'plus open';
+        document.getElementById(this.getAttribute('aria-controls')).hidden = false;
+      }
+    });
+  }
+
+  /* ---- Contact form ---- */
+  var sendBtn = $('sendBtn'), msg = $('formMsg');
+  function say(text) { msg.textContent = text; msg.hidden = false; }
+  if (sendBtn && msg) {
+    sendBtn.addEventListener('click', function () {
+      var url = $('siteUrl').value.trim();
+      var email = $('workEmail').value.trim();
+      var spend = $('adSpend').value;
+      if (!url || !email || email.indexOf('@') < 1) {
+        say('Add your landing page URL and a valid email so the teardown has somewhere to go.');
+        return;
+      }
+      if (FORM_ENDPOINT) {
+        sendBtn.disabled = true;
+        fetch(FORM_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ url: url, email: email, adSpend: spend })
+        }).then(function (r) {
+          sendBtn.disabled = false;
+          say(r.ok ? 'Got it. Your teardown request is in, and a reply is on its way.' : 'Something went wrong sending that. Please try again in a moment.');
+        }).catch(function () {
+          sendBtn.disabled = false;
+          say('Something went wrong sending that. Please check your connection and try again.');
+        });
+      } else if (CONTACT_EMAIL) {
+        var body = 'Landing page: ' + url + '\nEmail: ' + email + '\nMonthly ad spend: ' + spend;
+        window.location.href = 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('Post-click teardown request') + '&body=' + encodeURIComponent(body);
+        say('Your email app should open with the details filled in. Press send to finish.');
+      } else {
+        say('This form is not connected yet, so nothing was sent.');
+      }
+    });
+  }
+})();
+
+</script>
+</body>
+</html>
